@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Event Dashboard</title>
+    <style>
+body{
+font-family: Arial, Helvetica, sans-serif;
+background: linear-gradient(135deg,#057c7c,#04697d);
+margin:0;
+padding:20px;
+}
+
+h1{
+text-align:center;
+color:white;
+margin-bottom:30px;
+}
+
+.container{
+display:flex;
+gap:20px;
+justify-content:center;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+width:350px;
+}
+
+.card h2{
+color:#2039c7;
+margin-bottom:10px;
+}
+
+input,select,textarea{
+width:100%;
+padding:8px;
+margin:8px 0;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+background:#087480;
+color:white;
+border:none;
+padding:10px;
+width:100%;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#0d8494;
+}
+
+.events{
+margin-top:10px;
+}
+
+.eventCard{
+border:1px solid #ddd;
+padding:10px;
+margin-bottom:10px;
+border-radius:6px;
+background:#f7f7f7;
+}
+
+.eventCard h3{
+margin:0;
+}
+
+.deleteBtn{
+background:red;
+margin-top:8px;
+}
+
+.actionBtns{
+display:flex;
+gap:10px;
+margin-bottom:10px;
+}
+
+.actionBtns button{
+flex:1;
+}
+
+.domDemo{
+margin-top:30px;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+max-width:750px;
+margin-left:auto;
+margin-right:auto;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🎯 Smart Event Dashboard</h1>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Add New Event</h2>
+
+<input type="text" id="eventTitle" placeholder="Event Title">
+
+<input type="date" id="eventDate">
+
+<select id="eventCategory">
+<option>Conference</option>
+<option>Workshop</option>
+<option>Meetup</option>
+<option>Entertainment</option>
+</select>
+
+<textarea id="eventDescription" placeholder="Description"></textarea>
+
+<button id="addEventBtn">Add Event</button>
+
+</div>
+
+<div class="card">
+
+<h2>My Events</h2>
+
+<div class="actionBtns">
+<button id="clearEvents">Clear All Events</button>
+<button id="sampleEvents">Add Sample Events</button>
+</div>
+
+<div id="eventsContainer" class="events">
+No events yet. Add your first event!
+</div>
+
+</div>
+
+</div>
+
+
+<div class="domDemo">
+
+<h2>DOM Manipulation Demo</h2>
+
+<div id="keyPressed">You Pressed: None</div>
+
+</div>
+
+
+
+<script>
+
+const titleInput = document.getElementById("eventTitle");
+const dateInput = document.getElementById("eventDate");
+const categoryInput = document.getElementById("eventCategory");
+const descInput = document.getElementById("eventDescription");
+
+const addBtn = document.getElementById("addEventBtn");
+const eventContainer = document.getElementById("eventsContainer");
+
+const clearBtn = document.getElementById("clearEvents");
+const sampleBtn = document.getElementById("sampleEvents");
+
+const keyDisplay = document.getElementById("keyPressed");
+
+addBtn.addEventListener("click", function(){
+
+const title = titleInput.value;
+const date = dateInput.value;
+const category = categoryInput.value;
+const description = descInput.value;
+
+if(title === "" || date === "")
+{
+alert("Please fill Event Title and Date");
+return;
+}
+
+if(eventContainer.innerText.includes("No events yet"))
+{
+eventContainer.innerHTML="";
+}
+
+createEventCard(title,date,category,description);
+
+titleInput.value="";
+dateInput.value="";
+descInput.value="";
+
+});
+function createEventCard(title,date,category,description){
+
+const card=document.createElement("div");
+card.classList.add("eventCard");
+
+card.innerHTML=`
+
+<h3>${title}</h3>
+<p><strong>Date:</strong> ${date}</p>
+<p><strong>Category:</strong> ${category}</p>
+<p>${description}</p>
+<button class="deleteBtn">Delete</button>
+
+`;
+
+eventContainer.appendChild(card);
+
+}
+
+
+
+// Event Delegation for delete
+eventContainer.addEventListener("click",function(e){
+
+if(e.target.classList.contains("deleteBtn"))
+{
+e.target.parentElement.remove();
+}
+
+});
+
+clearBtn.addEventListener("click",function(){
+
+eventContainer.innerHTML="No events yet. Add your first event!";
+
+});
+
+sampleBtn.addEventListener("click",function(){
+
+eventContainer.innerHTML="";
+
+createEventCard(
+"Tech Conference",
+"2026-04-15",
+"Conference",
+"Latest technology discussions"
+);
+
+createEventCard(
+"Music Fest",
+"2026-05-20",
+"Entertainment",
+"Live music performances"
+);
+
+});
+
+document.addEventListener("keydown",function(event){
+
+keyDisplay.innerText="You Pressed: "+event.key;
+
+});
+
+
+</script>
+
+</body>
+</html>
